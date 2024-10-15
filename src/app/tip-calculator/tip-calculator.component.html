@@ -9,35 +9,24 @@
       <div class="input-column flex-1 space-y-6">
         <div class="input-group">
           <label for="billAmount" class="block text-gray-800 font-medium mb-2">Bill Amount:</label>
-          <input type="number" id="billAmount" [(ngModel)]="billAmount" (ngModelChange)="validateBillAmount()"
-            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Enter bill amount" />
+          <div class="flex items-center">
+            <input type="number" id="billAmount" [(ngModel)]="billAmount" (ngModelChange)="validateBillAmount()"
+              class="w-full pl-10 p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter bill amount" />
+          </div>
+
           <p *ngIf="billAmountInvalid" class="text-red-500 text-sm">Please enter a valid amount.</p>
         </div>
 
         <div class="input-group">
           <label for="tipPercentage" class="block text-gray-800 font-medium mb-2">Select Tip(%):</label>
           <div class="tip-options grid grid-cols-3 gap-2">
-            <button (click)="selectTip(5)" [ngClass]="{'bg-[#006e71]': tipPercentage === 5}"
+            @for (tip of tipPercentages; track tip) {
+            <button (click)="selectTip(tip)" [ngClass]="{'bg-[#006e71]': tipPercentage === tip}"
               class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
-              5%
+              {{ tip }}%
             </button>
-            <button (click)="selectTip(10)" [ngClass]="{'bg-[#006e71]': tipPercentage === 10}"
-              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
-              10%
-            </button>
-            <button (click)="selectTip(15)" [ngClass]="{'bg-[#006e71]': tipPercentage === 15}"
-              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
-              15%
-            </button>
-
-            <button (click)="selectTip(25)" [ngClass]="{'bg-[#006e71]': tipPercentage === 25}"
-              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
-              25%
-            </button>
-            <button (click)="selectTip(50)" [ngClass]="{'bg-[#006e71]': tipPercentage === 50}"
-              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
-              50%
-            </button>
+            }
             <input type="number" id="customTip" [(ngModel)]="customTipPercentage" (ngModelChange)="validateCustomTip()"
               class="p-3 border rounded-md w-full" placeholder="Custom" />
             <p *ngIf="customTipInvalid" class="text-red-500 text-sm">Please enter a valid custom tip (0-100).</p>

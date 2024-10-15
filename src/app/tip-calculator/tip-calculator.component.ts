@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule]
 })
 export class TipCalculatorComponent {
+  tipPercentages: number[] = [5, 10, 15, 25, 50];
   billAmount: number = 0;
   tipPercentage: number = 0;
   numberOfPeople: number = 1;
