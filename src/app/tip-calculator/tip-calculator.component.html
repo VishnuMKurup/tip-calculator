@@ -1,0 +1,93 @@
+<div class="flex items-center justify-center min-h-screen bg-[#c5e4e8]">
+  <div class="tip-calculator bg-gray-100 p-8 max-w-4xl mx-auto rounded-lg shadow-lg">
+    <header class="mb-6 text-center">
+      <h1 class="text-2xl font-bold text-gray-800">Split Tier</h1>
+    </header>
+
+    <main class="flex flex-col md:flex-row gap-8">
+      <!-- Left column: Inputs -->
+      <div class="input-column flex-1 space-y-6">
+        <div class="input-group">
+          <label for="billAmount" class="block text-gray-800 font-medium mb-2">Bill Amount:</label>
+          <input type="number" id="billAmount" [(ngModel)]="billAmount" (ngModelChange)="validateBillAmount()"
+            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500" placeholder="Enter bill amount" />
+          <p *ngIf="billAmountInvalid" class="text-red-500 text-sm">Please enter a valid amount.</p>
+        </div>
+
+        <div class="input-group">
+          <label for="tipPercentage" class="block text-gray-800 font-medium mb-2">Select Tip(%):</label>
+          <div class="tip-options grid grid-cols-3 gap-2">
+            <button (click)="selectTip(5)" [ngClass]="{'border-2 border-green-600 bg-[#006e71]': tipPercentage === 5}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+              5%
+            </button>
+            <button (click)="selectTip(10)" [ngClass]="{'border-2 border-green-600 bg-[#006e71]': tipPercentage === 10}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+              10%
+            </button>
+            <button (click)="selectTip(15)" [ngClass]="{'border-2 border-green-600 bg-[#006e71]': tipPercentage === 15}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+              15%
+            </button>
+
+            <button (click)="selectTip(25)" [ngClass]="{'border-2 border-green-600 bg-[#006e71]': tipPercentage === 25}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+              25%
+            </button>
+            <button (click)="selectTip(50)" [ngClass]="{'border-2 border-green-600 bg-[#006e71]': tipPercentage === 50}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+              50%
+            </button>
+            <input type="number" id="customTip" [(ngModel)]="customTipPercentage" (ngModelChange)="validateCustomTip()"
+              class="p-3 border rounded-md w-full" placeholder="Custom" />
+            <p *ngIf="customTipInvalid" class="text-red-500 text-sm">Please enter a valid custom tip (0-100).</p>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="numberOfPeople" class="block text-gray-800 font-medium mb-2">Number of People:</label>
+          <input type="number" id="numberOfPeople" min="1" [(ngModel)]="numberOfPeople"
+            (ngModelChange)="validateNumberOfPeople()"
+            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter number of people" />
+          <p *ngIf="numberOfPeopleInvalid" class="text-red-500 text-sm">Please enter a valid number of people.</p>
+        </div>
+      </div>
+
+      <!-- Right column: Results and Reset -->
+      <div class="results-column flex-1 flex flex-col"
+        style="background-color: #00474b; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="output p-12 text-center space-y-8">
+          <!-- Tip Amount Section -->
+          <div class="space-y-2 flex">
+            <div class="flex-1 text-left">
+              <p class="text-lg font-semibold text-white">Tip Amount</p>
+              <p class="text-sm text-white">/person</p>
+            </div>
+            <div class="flex justify-center items-center">
+              <span class="block text-[#22b4a0] font-bold text-3xl">${{ tipAmountPerPerson.toFixed(2) }}</span>
+            </div>
+          </div>
+
+          <!-- Total Per Person Section -->
+          <div class="space-y-2 flex">
+            <div class="flex-1 text-left">
+              <p class="text-lg font-semibold text-white">Total</p>
+              <p class="text-sm text-white">/person</p>
+            </div>
+            <div class="flex justify-center items-center">
+              <span class="block text-[#22b4a0] font-bold text-3xl">${{ totalAmountPerPerson.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reset Button at the Bottom -->
+        <div class="mt-auto p-4">
+          <button class="w-full bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600" (click)="reset()">
+            Reset
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
