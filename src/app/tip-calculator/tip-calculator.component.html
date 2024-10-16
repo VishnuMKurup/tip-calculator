@@ -9,10 +9,14 @@
       <div class="input-column flex-1 space-y-6">
         <div class="input-group">
           <label for="billAmount" class="block text-gray-800 font-medium mb-2">Bill Amount:</label>
-          <div class="flex items-center">
-            <input type="number" id="billAmount" [(ngModel)]="billAmount" (ngModelChange)="validateBillAmount()"
-              class="w-full pl-10 p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
+          <div class="flex items-center relative">
+            <i class="fa fa-usd absolute text-gray-800 ml-3" aria-hidden="true"></i>
+            <div class="pl-10 border rounded-md bg-gray-600 w-full">
+              <input type="number" id="billAmount" [(ngModel)]="billAmount" (ngModelChange)="validateBillAmount()"
+              class="w-full focus:ring-2 focus:ring-blue-500 bg-white p-3"
               placeholder="Enter bill amount" />
+            </div>
+            
           </div>
 
           <p *ngIf="billAmountInvalid" class="text-red-500 text-sm">Please enter a valid amount.</p>
@@ -35,12 +39,17 @@
 
         <div class="input-group">
           <label for="numberOfPeople" class="block text-gray-800 font-medium mb-2">Number of People:</label>
+          <div class="flex items-center relative">
+          <i class="fa fa-users absolute text-gray-800 ml-3" aria-hidden="true"></i>
+          <div class="pl-10 border rounded-md bg-gray-600 w-full">
           <input type="number" id="numberOfPeople" min="1" [(ngModel)]="numberOfPeople"
             (ngModelChange)="validateNumberOfPeople()"
-            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500"
+            class="w-full p-3 focus:ring-2 focus:ring-blue-500"
             placeholder="Enter number of people" />
           <p *ngIf="numberOfPeopleInvalid" class="text-red-500 text-sm">Please enter a valid number of people.</p>
         </div>
+        </div>
+      </div>
       </div>
 
       <!-- Right column: Results and Reset -->
