@@ -7,45 +7,64 @@
     <main class="flex flex-col md:flex-row gap-8">
       <!-- Left column: Inputs -->
       <div class="input-column flex-1 space-y-6">
+        <!-- Bill Amount -->
         <div class="input-group">
           <label for="billAmount" class="block text-gray-800 font-medium mb-2">Bill Amount:</label>
           <div class="flex items-center relative">
             <i class="fa fa-usd absolute text-gray-800 ml-3" aria-hidden="true"></i>
             <div class="pl-10 border rounded-md bg-gray-600 w-full">
-              <input type="number" id="billAmount" [value]="billAmount()" 
-                     (input)="billAmount.set(+($event.target.value || 0)); validateBillAmount()" 
-                     class="w-full focus:ring-2 focus:ring-blue-500 bg-white p-3"
-                     placeholder="Enter bill amount" />
+              <input
+                type="number"
+                id="billAmount"
+                [value]="billAmount()"
+                (input)="billAmount.set(handleInputValue($event)); validateBillAmount()"
+                class="w-full focus:ring-2 focus:ring-blue-500 bg-white p-3"
+                placeholder="Enter bill amount"
+              />
             </div>
           </div>
           <p *ngIf="billAmountInvalid()" class="text-red-500 text-sm">Please enter a valid amount.</p>
         </div>
 
+        <!-- Tip Percentage -->
         <div class="input-group">
           <label for="tipPercentage" class="block text-gray-800 font-medium mb-2">Select Tip(%):</label>
           <div class="tip-options grid grid-cols-3 gap-2">
-            <button *ngFor="let tip of [5, 10, 15, 25, 50]" 
-                    (click)="selectTip(tip)" 
-                    [ngClass]="{'bg-[#006e71]': tipPercentage() === tip}" 
-                    class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]">
+            <button
+              *ngFor="let tip of [5, 10, 15, 25, 50]"
+              (click)="selectTip(tip)"
+              [ngClass]="{'bg-[#006e71]': tipPercentage() === tip}"
+              class="bg-[#00474b] text-white px-4 py-2 rounded-md hover:bg-[#006e71]"
+            >
               {{ tip }}%
             </button>
-            <input type="number" id="customTip" [value]="customTipPercentage() || ''" 
-                   (input)="customTipPercentage.set(+($event.target.value || 0)); validateCustomTip()" 
-                   class="p-3 border rounded-md w-full" placeholder="Custom" />
-            <p *ngIf="customTipInvalid()" class="text-red-500 text-sm">Please enter a valid custom tip (0-100).</p>
+            <input
+              type="number"
+              id="customTip"
+              [value]="customTipPercentage() || ''"
+              (input)="customTipPercentage.set(handleInputValue($event)); validateCustomTip()"
+              class="p-3 border rounded-md w-full"
+              placeholder="Custom"
+            />
           </div>
+          <p *ngIf="customTipInvalid()" class="text-red-500 text-sm">Please enter a valid custom tip (0-100).</p>
         </div>
 
+        <!-- Number of People -->
         <div class="input-group">
           <label for="numberOfPeople" class="block text-gray-800 font-medium mb-2">Number of People:</label>
           <div class="flex items-center relative">
             <i class="fa fa-users absolute text-gray-800 ml-3" aria-hidden="true"></i>
             <div class="pl-10 border rounded-md bg-gray-600 w-full">
-              <input type="number" id="numberOfPeople" min="1" [value]="numberOfPeople()" 
-                     (input)="numberOfPeople.set(+($event.target.value || 1)); validateNumberOfPeople()" 
-                     class="w-full p-3 focus:ring-2 focus:ring-blue-500"
-                     placeholder="Enter number of people" />
+              <input
+                type="number"
+                id="numberOfPeople"
+                min="1"
+                [value]="numberOfPeople()"
+                (input)="numberOfPeople.set(handleInputValue($event)); validateNumberOfPeople()"
+                class="w-full p-3 focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter number of people"
+              />
             </div>
           </div>
           <p *ngIf="numberOfPeopleInvalid()" class="text-red-500 text-sm">Please enter a valid number of people.</p>

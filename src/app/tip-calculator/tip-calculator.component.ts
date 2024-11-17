@@ -64,4 +64,9 @@ export class TipCalculatorComponent {
     this.customTipInvalid.set(false);
     this.numberOfPeopleInvalid.set(false);
   }
+
+  handleInputValue(event: Event): number {
+    const target = event.target as HTMLInputElement;
+    return +(target?.value || 0);
+  } 
 }
