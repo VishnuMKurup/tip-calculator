@@ -1,75 +1,67 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, signal, computed } from '@angular/core';
 
 @Component({
   standalone: true,
   selector: 'app-tip-calculator',
   templateUrl: './tip-calculator.component.html',
   styleUrls: ['./tip-calculator.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule]
 })
 export class TipCalculatorComponent {
-  tipPercentages: number[] = [5, 10, 15, 25, 50];
-  billAmount: number = 0;
-  tipPercentage: number = 0;
-  numberOfPeople: number = 1;
-  customTipPercentage: number | null = null; // Allow null
+  // Signals for state management
+  billAmount = signal(0);
+  tipPercentage = signal(0);
+  customTipPercentage = signal<number | null>(null);
+  numberOfPeople = signal(1);
 
-  // Validation flags
-  billAmountInvalid: boolean = false;
-  customTipInvalid: boolean = false;
-  numberOfPeopleInvalid: boolean = false;
+  // Validation flags as signals
+  billAmountInvalid = signal(false);
+  customTipInvalid = signal(false);
+  numberOfPeopleInvalid = signal(false);
 
-  get tipAmount(): number {
-    if (this.customTipPercentage) {
-      this.tipPercentage = 0;
-    }
-    return this.billAmount * ((this.customTipPercentage !== null ? this.customTipPercentage : this.tipPercentage) / 100);
-  }
+  // Computed signals for derived state
+  tipAmount = computed(() => {
+    const percentage = this.customTipPercentage() ?? this.tipPercentage();
+    return this.billAmount() * (percentage / 100);
+  });
 
-  get totalAmount(): number {
-    return this.billAmount + this.tipAmount;
-  }
+  totalAmount = computed(() => this.billAmount() + this.tipAmount());
 
-  get tipAmountPerPerson(): number {
-    return this.tipAmount / this.numberOfPeople;
-  }
+  tipAmountPerPerson = computed(() => this.tipAmount() / this.numberOfPeople());
+  totalAmountPerPerson = computed(() => this.totalAmount() / this.numberOfPeople());
 
-  get totalAmountPerPerson(): number {
-    return this.totalAmount / this.numberOfPeople;
-  }
-
+  // Action methods to update signals
   selectTip(percentage: number) {
-    this.tipPercentage = percentage;
-    this.customTipPercentage = null; // Clear custom percentage when selecting a predefined tip
+    this.tipPercentage.set(percentage);
+    this.customTipPercentage.set(null); // Clear custom percentage when selecting a predefined tip
   }
 
   reset() {
-    this.billAmount = 0;
-    this.tipPercentage = 0;
-    this.customTipPercentage = null; // Allow null
-    this.numberOfPeople = 1;
+    this.billAmount.set(0);
+    this.tipPercentage.set(0);
+    this.customTipPercentage.set(null);
+    this.numberOfPeople.set(1);
     this.clearValidations();
   }
 
   // Validation methods
   validateBillAmount() {
-    this.billAmountInvalid = this.billAmount <= 0;
+    this.billAmountInvalid.set(this.billAmount() <= 0);
   }
 
   validateCustomTip() {
-    this.customTipInvalid = this.customTipPercentage !== null &&
-      (this.customTipPercentage < 0 || this.customTipPercentage > 100);
+    const customTip = this.customTipPercentage();
+    this.customTipInvalid.set(customTip !== null && (customTip < 0 || customTip > 100));
   }
 
   validateNumberOfPeople() {
-    this.numberOfPeopleInvalid = this.numberOfPeople < 1;
+    this.numberOfPeopleInvalid.set(this.numberOfPeople() < 1);
   }
 
   clearValidations() {
-    this.billAmountInvalid = false;
-    this.customTipInvalid = false;
-    this.numberOfPeopleInvalid = false;
+    this.billAmountInvalid.set(false);
+    this.customTipInvalid.set(false);
+    this.numberOfPeopleInvalid.set(false);
   }
 }

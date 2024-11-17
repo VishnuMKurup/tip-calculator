@@ -7,7 +7,7 @@ import {
   EventManagerPlugin,
   HTTP_ROOT_INTERCEPTOR_FNS,
   HttpClientModule
-} from "./chunk-S3JCAGRY.js";
+} from "./chunk-ZNPI4WDY.js";
 import {
   DOCUMENT,
   NullViewportScroller,
@@ -17,7 +17,7 @@ import {
   XhrFactory,
   getDOM,
   setRootDomAdapter
-} from "./chunk-AWWGSX4I.js";
+} from "./chunk-O5BXKZXD.js";
 import {
   ALLOW_MULTIPLE_PLATFORMS,
   ANIMATION_MODULE_TYPE,
@@ -56,13 +56,12 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-44JQ5FZC.js";
+} from "./chunk-Y44MH3EE.js";
 import {
-  __async,
   __objRest,
   __spreadValues,
   __toESM
-} from "./chunk-NQ4HTGF6.js";
+} from "./chunk-6DU2HRTW.js";
 
 // node_modules/@angular/animations/fesm2022/animations.mjs
 var AnimationMetadataType;
@@ -20886,15 +20885,13 @@ var ServerXhr = class _ServerXhr {
   // global scope. Loading `xhr2` dynamically allows us to delay the loading
   // and start the process once the global scope is established by the underlying
   // server platform (via shims, etc).
-  ɵloadImpl() {
-    return __async(this, null, function* () {
-      if (!this.xhrImpl) {
-        const {
-          default: xhr
-        } = yield import("./xhr2-ISERFGGE.js");
-        this.xhrImpl = xhr;
-      }
-    });
+  async ɵloadImpl() {
+    if (!this.xhrImpl) {
+      const {
+        default: xhr
+      } = await import("./xhr2-ZIACK3JJ.js");
+      this.xhrImpl = xhr;
+    }
   }
   build() {
     const impl = this.xhrImpl;
@@ -21342,36 +21339,34 @@ function insertEventRecordScript(appId, doc, eventTypesToReplay, nonce) {
     eventDispatchScript.after(replayScript);
   }
 }
-function _render(platformRef, applicationRef) {
-  return __async(this, null, function* () {
-    yield whenStable(applicationRef);
-    const platformState = platformRef.injector.get(PlatformState);
-    prepareForHydration(platformState, applicationRef);
-    const environmentInjector = applicationRef.injector;
-    const callbacks = environmentInjector.get(BEFORE_APP_SERIALIZED, null);
-    if (callbacks) {
-      const asyncCallbacks = [];
-      for (const callback of callbacks) {
-        try {
-          const callbackResult = callback();
-          if (callbackResult) {
-            asyncCallbacks.push(callbackResult);
-          }
-        } catch (e) {
-          console.warn("Ignoring BEFORE_APP_SERIALIZED Exception: ", e);
+async function _render(platformRef, applicationRef) {
+  await whenStable(applicationRef);
+  const platformState = platformRef.injector.get(PlatformState);
+  prepareForHydration(platformState, applicationRef);
+  const environmentInjector = applicationRef.injector;
+  const callbacks = environmentInjector.get(BEFORE_APP_SERIALIZED, null);
+  if (callbacks) {
+    const asyncCallbacks = [];
+    for (const callback of callbacks) {
+      try {
+        const callbackResult = callback();
+        if (callbackResult) {
+          asyncCallbacks.push(callbackResult);
         }
+      } catch (e) {
+        console.warn("Ignoring BEFORE_APP_SERIALIZED Exception: ", e);
       }
-      if (asyncCallbacks.length) {
-        for (const result of yield Promise.allSettled(asyncCallbacks)) {
-          if (result.status === "rejected") {
-            console.warn("Ignoring BEFORE_APP_SERIALIZED Exception: ", result.reason);
-          }
+    }
+    if (asyncCallbacks.length) {
+      for (const result of await Promise.allSettled(asyncCallbacks)) {
+        if (result.status === "rejected") {
+          console.warn("Ignoring BEFORE_APP_SERIALIZED Exception: ", result.reason);
         }
       }
     }
-    appendServerContextInfo(applicationRef);
-    return platformState.renderToString();
-  });
+  }
+  appendServerContextInfo(applicationRef);
+  return platformState.renderToString();
 }
 function asyncDestroyPlatform(platformRef) {
   return new Promise((resolve) => {
@@ -21387,38 +21382,34 @@ function sanitizeServerContext(serverContext) {
   const context = serverContext.replace(/[^a-zA-Z0-9\-]/g, "");
   return context.length > 0 ? context : DEFAULT_SERVER_CONTEXT;
 }
-function renderModule(moduleType, options) {
-  return __async(this, null, function* () {
-    const {
-      document: document2,
-      url,
-      extraProviders: platformProviders
-    } = options;
-    const platformRef = createServerPlatform({
-      document: document2,
-      url,
-      platformProviders
-    });
-    try {
-      const moduleRef = yield platformRef.bootstrapModule(moduleType);
-      const applicationRef = moduleRef.injector.get(ApplicationRef);
-      return yield _render(platformRef, applicationRef);
-    } finally {
-      yield asyncDestroyPlatform(platformRef);
-    }
+async function renderModule(moduleType, options) {
+  const {
+    document: document2,
+    url,
+    extraProviders: platformProviders
+  } = options;
+  const platformRef = createServerPlatform({
+    document: document2,
+    url,
+    platformProviders
   });
+  try {
+    const moduleRef = await platformRef.bootstrapModule(moduleType);
+    const applicationRef = moduleRef.injector.get(ApplicationRef);
+    return await _render(platformRef, applicationRef);
+  } finally {
+    await asyncDestroyPlatform(platformRef);
+  }
 }
-function renderApplication(bootstrap, options) {
-  return __async(this, null, function* () {
-    return runAndMeasurePerf("renderApplication", () => __async(this, null, function* () {
-      const platformRef = createServerPlatform(options);
-      try {
-        const applicationRef = yield bootstrap();
-        return yield _render(platformRef, applicationRef);
-      } finally {
-        yield asyncDestroyPlatform(platformRef);
-      }
-    }));
+async function renderApplication(bootstrap, options) {
+  return runAndMeasurePerf("renderApplication", async () => {
+    const platformRef = createServerPlatform(options);
+    try {
+      const applicationRef = await bootstrap();
+      return await _render(platformRef, applicationRef);
+    } finally {
+      await asyncDestroyPlatform(platformRef);
+    }
   });
 }
 var VERSION = new Version("18.2.12");

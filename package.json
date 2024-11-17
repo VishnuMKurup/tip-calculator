@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:tip-calculator": "node dist/tip-calculator/server/server.mjs"
+    "serve:ssr:tip-calculator": "node dist/tip-calculator/server/server.mjs",
+    "deploy": "ng deploy"
   },
   "private": true,
   "dependencies": {
@@ -25,8 +26,7 @@
     "express": "^4.18.2",
     "font-awesome": "^4.7.0",
     "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.14.3"
+    "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^18.2.12",
